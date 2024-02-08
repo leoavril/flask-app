@@ -33,7 +33,7 @@ jobs:
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_b05d7454be9d485aa8a9c9dd677969bf }}/flaskapp:${{ github.sha }}
         file: ./Dockerfile
 
-  deploy:
+  push_to_main:
     runs-on: ubuntu-latest
     needs: build
     environment:
