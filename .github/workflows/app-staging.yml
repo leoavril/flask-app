@@ -34,6 +34,27 @@ jobs:
           python test-endtoend-app.py
           kill $APP_PID
 
+  push_to_main:
+    name: Push Staging Branch
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Configure Git User
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Merge into main
+        run: |
+          git fetch origin 
+          git checkout staging
+          git push -f origin staging:main
+        env:
+          GIT_AUTH_TOKEN: ${{ secrets.GIT_TOKEN }}
+
   push_to_registry:
     name: Push Docker image to Docker Hub
     needs: build_and_test
